@@ -4,6 +4,9 @@ public class PickUpController : MonoBehaviour
 {
     [SerializeField] private Transform playerCam; // serialize field to assign the player camera in inspector
     [SerializeField] private LayerMask pickUpLayerMask; // serialize field to assign the layer mask in inspector
+    [SerializeField] private LayerMask coinLayerMask;
+
+    public CoinManager cm; // calls coinmanager script
     private void Update()
     {
         Collection();
@@ -28,16 +31,23 @@ public class PickUpController : MonoBehaviour
         }
     }
 
-    private void Inventory(){
+    private void Inventory()
+    {
         // TO DO: INV SYSTEM
         Debug.Log("Added to Inventory");
     }
 
-    private void DestroyGameObject()
+    private void OnTriggerEnter(Collider other)
     {
-        // TO DO: DESTROY PICKED UP OBJECT FROM SCENE
-        Debug.Log("Destroyed Game Object from Scene");
+        // Check if the colliding object is on the coin layer
+        if (((1 << other.gameObject.layer) & coinLayerMask) != 0)
+        {
+            cm.coinCount++;
+            Debug.Log("Coin collected! Total coins: " + cm.coinCount);
+            // Optional: Destroy the coin after collection
+            Destroy(other.gameObject);
+        }
+
+
     }
-
-
 }
