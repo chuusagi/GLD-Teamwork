@@ -1,16 +1,14 @@
 using UnityEngine;
 
-public class ShopUi : MonoBehaviour
+public class ShopUI : MonoBehaviour
 {
-    private Transform container;
-    private Transform shopItem;
+    public GameObject Shop;
 
-    private void Awake()
-    {
-        container = transform.Find("container");
-        shopItem = container.Find("shopItem");
-        shopItem.gameObject.SetActive(false); 
-
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.B))
+		{
+			Shop.SetActive(!Shop.activeSelf);
+		}
 	}
-
 }
