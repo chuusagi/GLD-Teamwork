@@ -463,7 +463,7 @@
 "Assets/Scripts/Movement/PlayerCamera.cs"
 "Assets/Scripts/Movement/PlayerMovement.cs"
 "Assets/Scripts/PickUpController.cs"
-"Assets/Scripts/Shop/ShopUI.cs"
+"Assets/Scripts/Shop/ShopUi.cs"
 -langversion:9.0
 /deterministic
 /optimize+
