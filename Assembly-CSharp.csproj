@@ -62,12 +62,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Shop\ShopUi.cs" />
-    <Compile Include="Assets\Scripts\CoinManager.cs" />
-    <Compile Include="Assets\Scripts\Movement\PlayerCamera.cs" />
-    <Compile Include="Assets\Scripts\GrabbableObjects.cs" />
-    <Compile Include="Assets\Scripts\PickUpController.cs" />
-    <Compile Include="Assets\Scripts\Movement\MoveCamera.cs" />
-    <Compile Include="Assets\Scripts\Movement\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\Enemies\EnemyNavigation.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerCamera.cs" />
+    <Compile Include="Assets\Scripts\Collectibles\CoinManager.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\Player\MoveCamera.cs" />
+    <Compile Include="Assets\Scripts\Collectibles\PickUpController.cs" />
+    <Compile Include="Assets\Scripts\Collectibles\GrabbableObjects.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
