@@ -38,11 +38,9 @@ public class PickUpController : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// Handles collision with coin objects using Unity's trigger system.
     /// Increases the coin count and updates the UI when a coin is collected.
-    /// </summary>
-    /// <param name="other">The collider that entered the trigger.</param>
+
     private void OnTriggerEnter(Collider other)
     {
         // Check if the colliding object is on the coin layer

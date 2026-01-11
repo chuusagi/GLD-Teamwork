@@ -1,31 +1,132 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-/// <summary>
-/// Controls enemy navigation using Unity's NavMeshAgent.
-/// Continuously sets the agent's destination to the player's position.
-/// </summary>
-public class EnemyNavigation : MonoBehaviour
+public class EnemyNavigationAndCombat : MonoBehaviour
 {
-    public Transform player; // Reference to the player's transform; assign in Inspector
-    private NavMeshAgent agent; // NavMeshAgent component used for pathfinding
+    // references 
+    public NavMeshAgent agent;
+    public Transform player;
 
-    /// <summary>
-    /// Initializes the NavMeshAgent component.
-    /// </summary>
-    void Start()
+    public LayerMask whatIsGround, whatIsPlayer; // layer detection
+
+    public float health; // enemy health
+
+    //patrolling
+    public Vector3 walkPoint;
+    bool walkPointSet;
+    public float walkPointRange;
+
+    // combat
+    public float timeBetweenAttacks;
+    bool alreadyAttacked;
+    public GameObject projectile;
+
+    // detection+ states
+    public float sightRange, attackRange;
+    public bool playerInSightRange, playerInAttackRange;
+
+    private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>(); // Get the NavMeshAgent attached to this GameObject
+        // find the player object and get the NavMeshAgent component
+        player = GameObject.Find("PlayerObj").transform;
+        agent = GetComponent<NavMeshAgent>();
     }
 
-    /// <summary>
-    /// Updates the agent's destination every frame if the player reference is set.
-    /// </summary>
-    void Update()
+    private void Update()
     {
-        if (player != null) // Ensure the player reference is valid
+        // check for sight and attack range
+        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+
+        if (!playerInSightRange && !playerInAttackRange)
+            Patroling();
+        else if (playerInSightRange && !playerInAttackRange)
+            ChasePlayer();
+        else if (playerInAttackRange && playerInSightRange)
+            AttackPlayer();
+    }
+
+    // patrolling behavior by moving to walk points defined in unity editor
+    private void Patroling()
+    {
+        if (!walkPointSet) SearchWalkPoint();
+
+        if (walkPointSet)
+            agent.SetDestination(walkPoint);
+
+        Vector3 distanceToWalkPoint = transform.position - walkPoint; // calculate distance to walkpoint
+
+        // walkpoint reached -  if distance is less than 1, reset walkpoint
+        if (distanceToWalkPoint.magnitude < 1f)
+            walkPointSet = false;
+    }
+
+    // calculates a random walk point within range and checks if it's on the ground
+    private void SearchWalkPoint()
+    {
+        //Calculate random point in range
+        float randomZ = Random.Range(-walkPointRange, walkPointRange);
+        float randomX = Random.Range(-walkPointRange, walkPointRange);
+
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+        // ensure walkpoint is on the ground
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround))
+            walkPointSet = true;
+    }
+
+    // sets the agent's destination to the player's position to chase them
+    private void ChasePlayer()
+    {
+        agent.SetDestination(player.position); // set destination to player position
+    }
+
+    // handles attacking the player by shooting a projectile and managing attack cooldown
+    private void AttackPlayer()
+    {
+        //Make sure enemy doesn't move
+        agent.SetDestination(transform.position);
+
+        transform.LookAt(player);
+
+        if (!alreadyAttacked)
         {
-            agent.SetDestination(player.position); // Move towards the player's current position
+            // instantiate projectile and add force to it (aka shoot it)
+            Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+            rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
+            rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+
+            alreadyAttacked = true;
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
+    }
+
+    // resets the attack cooldown so the enemy can attack again
+    private void ResetAttack()
+    {
+        alreadyAttacked = false;
+    }
+
+    // reduces health by damage amount and destroys enemy if health is zero or less
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+
+        if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
+    }
+
+    // destroys the enemy game object
+    private void DestroyEnemy()
+    {
+        Destroy(gameObject);
+    }
+
+    // draws gizmos in the editor to visualize attack and sight ranges
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, sightRange);
     }
 }

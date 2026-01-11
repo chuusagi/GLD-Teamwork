@@ -460,6 +460,8 @@
 "Assets/Scripts/Collectibles/CoinManager.cs"
 "Assets/Scripts/Collectibles/GrabbableObjects.cs"
 "Assets/Scripts/Collectibles/PickUpController.cs"
+"Assets/Scripts/Combat/HitDetection.cs"
+"Assets/Scripts/Combat/WeaponController.cs"
 "Assets/Scripts/Enemies/EnemyNavigation.cs"
 "Assets/Scripts/Player/MoveCamera.cs"
 "Assets/Scripts/Player/PlayerCamera.cs"
