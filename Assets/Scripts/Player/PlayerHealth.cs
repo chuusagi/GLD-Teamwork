@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour, IShopPurchase
     private void Start()
     {
         currentHealth = maxHealth;
-        dropsManager = FindObjectOfType<DropsManager>();
+        dropsManager = Object.FindFirstObjectByType<DropsManager>();
     }
 
     public void TakeDamage(float damage)

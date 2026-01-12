@@ -7,7 +7,6 @@ public class DropsManager : MonoBehaviour
     public TMP_Text coinText;
     public TMP_Text dropText;
     public int coinCount = 0;
-    public int CoinCount => coinCount; // public getter for coin count
     public int dropCount = 0;
 
 

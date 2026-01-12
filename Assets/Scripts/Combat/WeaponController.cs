@@ -11,6 +11,9 @@ public class WeaponController : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0f)
+            return; 
+
         // Check for attack input (left mouse button)
         if (Input.GetMouseButtonDown(0) && CanAttack)
         {
