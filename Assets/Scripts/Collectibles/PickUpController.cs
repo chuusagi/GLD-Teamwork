@@ -5,9 +5,11 @@ public class PickUpController : MonoBehaviour
     [SerializeField] private Transform playerCam; // Reference to the player's camera for raycasting
     [SerializeField] private LayerMask pickUpLayerMask; // Layer mask to filter pickable objects
     [SerializeField] private LayerMask coinLayerMask; // Layer mask to filter coin objects
+    [SerializeField] private LayerMask dropLayerMask; // Layer mask to filter drop objects
+    public DropsManager dm; // Reference to the DropsManager script (should be assigned in the Inspector)
 
-    public CoinManager cm; // Reference to the CoinManager script (should be assigned in the Inspector)
-    int value; // Value to increase coins by (should be set appropriately elsewhere)
+    [SerializeField] private int coinValue = 1; // Value for coins
+    [SerializeField] private int dropValue = 1; // Value for drops
 
     private void Update()
     {
@@ -25,6 +27,7 @@ public class PickUpController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             float collectionDist = 2f; // Maximum distance to pick up objects
+
             // Perform a raycast from the camera's position forward
             if (Physics.Raycast(playerCam.position, playerCam.forward, out RaycastHit raycastHit, collectionDist, pickUpLayerMask))
             {
@@ -38,18 +41,42 @@ public class PickUpController : MonoBehaviour
         }
     }
 
+    /// <summary>
     /// Handles collision with coin objects using Unity's trigger system.
     /// Increases the coin count and updates the UI when a coin is collected.
-
+    /// </summary>
     private void OnTriggerEnter(Collider other)
     {
         // Check if the colliding object is on the coin layer
         if (((1 << other.gameObject.layer) & coinLayerMask) != 0)
         {
-            cm.coinCount++; // Increment the coin count in the CoinManager
-            Debug.Log("Coin collected! Total coins: " + cm.coinCount);
+            // Update via singleton if it exists
+            if (DropsManager.instance != null)
+            {
+                DropsManager.instance.IncreaseCoins(coinValue);
+                Debug.Log("Coin collected! Total coins: " + DropsManager.instance.coinCount);
+            }
+            else
+            {
+                Debug.LogWarning("DropsManager.instance is null! Make sure DropsManager exists in the scene.");
+            }
+
             Destroy(other.gameObject); // Remove the coin from the scene
-            CoinManager.instance.IncreaseCoins(value); // Update the coin count in the UI (value should be set appropriately)
+        }
+        else if (((1 << other.gameObject.layer) & dropLayerMask) != 0)
+        {
+            // Update via singleton if it exists
+            if (DropsManager.instance != null)
+            {
+                DropsManager.instance.IncreaseDrop(dropValue);
+                Debug.Log("Drop collected! Total drops: " + DropsManager.instance.dropCount);
+            }
+            else
+            {
+                Debug.LogWarning("DropsManager.instance is null! Make sure DropsManager exists in the scene.");
+            }
+
+            Destroy(other.gameObject); // Remove the drop from the scene
         }
     }
 }
