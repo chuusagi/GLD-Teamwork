@@ -7,13 +7,13 @@ public class DropsManager : MonoBehaviour
     public TMP_Text coinText;
     public TMP_Text dropText;
     public int coinCount = 0;
+    public int CoinCount => coinCount; // public getter for coin count
     public int dropCount = 0;
-    
-    
+
 
     private void Awake()
     {
-            instance = this; //  creates singleton instance
+        instance = this; //  creates singleton instance
 
     }
 
@@ -30,10 +30,20 @@ public class DropsManager : MonoBehaviour
         coinText.text = "Coins: " + coinCount.ToString(); // updates coin text
     }
 
+    public bool SpendCoins(int v)
+    {
+        if (coinCount >= v)
+        {
+            coinCount -= v;
+            return true;
+        }
+        return false;
+    }
+
     public void IncreaseDrop(int v)
     {
         dropCount += v;
-        dropText.text = "Drops: " + dropCount.ToString(); 
+        dropText.text = "Drops: " + dropCount.ToString();
     }
 
 

@@ -468,7 +468,9 @@
 "Assets/Scripts/Player/PlayerCamera.cs"
 "Assets/Scripts/Player/PlayerHealth.cs"
 "Assets/Scripts/Player/PlayerMovement.cs"
-"Assets/Scripts/Shop/ShopUi.cs"
+"Assets/Scripts/Shop/IShopPurchase.cs"
+"Assets/Scripts/Shop/ShopItem.cs"
+"Assets/Scripts/Shop/ShopUI.cs"
 -langversion:9.0
 /deterministic
 /optimize+

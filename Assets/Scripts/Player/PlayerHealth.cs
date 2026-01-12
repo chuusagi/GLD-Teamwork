@@ -1,13 +1,14 @@
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerManager : MonoBehaviour, IShopPurchase
 {
     public float maxHealth = 100f;
     public float currentHealth;
-
+    private DropsManager dropsManager;
     private void Start()
     {
         currentHealth = maxHealth;
+        dropsManager = FindObjectOfType<DropsManager>();
     }
 
     public void TakeDamage(float damage)
@@ -33,8 +34,22 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player Died!");
-        // Add death logic here (respawn, game over screen, etc.)
-        // For now, just destroy the player
+        // just destroy the player
         Destroy(gameObject);
     }
+
+    public void BoughtItem(ShopItem.ItemType itemType)
+    {
+        Debug.Log("Player bought item: " + itemType);
+    }
+
+    public bool CanBuyItem(int coinAmount)
+    {
+        if (dropsManager != null)
+        {
+            return dropsManager.SpendCoins(coinAmount);
+        }
+        return false;
+    }
 }
+    

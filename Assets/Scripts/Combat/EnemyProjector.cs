@@ -16,8 +16,8 @@ public class EnemyProjectile : MonoBehaviour
         // check if projectile hit the player
         if (collision.gameObject.CompareTag("Player"))
         {
-            // try to get PlayerHealth component and deal damage
-            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+            // try to get PlayerManager component and deal damage
+            PlayerManager playerHealth = collision.gameObject.GetComponent<PlayerManager>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(damage);

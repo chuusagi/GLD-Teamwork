@@ -62,13 +62,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Collectibles\DropsManager.cs" />
-    <Compile Include="Assets\Scripts\Shop\ShopUi.cs" />
+    <Compile Include="Assets\Scripts\Shop\ShopItem.cs" />
     <Compile Include="Assets\Scripts\Combat\EnemyProjector.cs" />
     <Compile Include="Assets\Scripts\Combat\HitDetection.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCamera.cs" />
+    <Compile Include="Assets\Scripts\Shop\IShopPurchase.cs" />
     <Compile Include="Assets\Scripts\Combat\WeaponController.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Enemies\EnemyManager.cs" />
+    <Compile Include="Assets\Scripts\Shop\ShopUI.cs" />
     <Compile Include="Assets\Scripts\Player\MoveCamera.cs" />
     <Compile Include="Assets\Scripts\Collectibles\PickUpController.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerHealth.cs" />
